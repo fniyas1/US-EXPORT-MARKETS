@@ -2,14 +2,14 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 import pandas as pd
 
-# read in data and see its info
+# read in data and see its info - initial exploration of sheet structure
 data = pd.read_excel("Coding Test.xlsx", sheet_name=1, header=None)
-print(data.head())
+#print(data.head())
 
 # seperate soybeans data from 'Oct'
 soybeans = pd.read_excel("Coding Test.xlsx", sheet_name=1, skiprows=5, nrows=10, header=None)
 soybeans.columns = ["Country", "2024", "2025"]
-print(soybeans)
+#print(soybeans)
 
 # soybeans horizontal bar chart
 plt.figure(figsize=(10,7))
@@ -28,7 +28,7 @@ fig1 = plt.gcf()
 # seperate corn data from 'Oct'
 corn = pd.read_excel("Coding Test.xlsx", sheet_name=1, skiprows=17, nrows=10, header=None)
 corn.columns = ["Country", "2024", "2025"]
-print(corn)
+#print(corn)
 
 # corn bar chart
 plt.figure(figsize=(10,7))
@@ -48,7 +48,7 @@ fig2 = plt.gcf()
 # seperate wheat data from 'Oct'
 wheat = pd.read_excel("Coding Test.xlsx", sheet_name=1, skiprows=29, nrows=11, header=None)
 wheat.columns = ["Country", "2024", "2025"]
-print(wheat)
+#print(wheat)
 
 # wheat line chart
 wheat_t = wheat.set_index("Country").T  # flips rows and columns
@@ -69,7 +69,7 @@ fig3 = plt.gcf()
 # seperate soybeans data from 'Nov'
 soy_nov = pd.read_excel("Coding Test.xlsx", sheet_name=2, skiprows=5, nrows=10, header=None)
 soy_nov.columns = ["Country", "2024"]
-print(soy_nov)
+#print(soy_nov)
 
 # soybeans pie chart
 plt.figure(figsize=(10,7))
@@ -83,7 +83,7 @@ fig4 = plt.gcf()
 # seperate corn data from 'Nov'
 corn_nov = pd.read_excel("Coding Test.xlsx", sheet_name=2, skiprows=17, nrows=10, header=None)
 corn_nov.columns = ["Country", "2024"]
-print(corn_nov)
+#print(corn_nov)
 
 # corn horizontal bar chart
 plt.figure(figsize=(10,7))
@@ -100,7 +100,7 @@ fig5 = plt.gcf()
 # seperate wheat data from 'Nov'
 wheat_nov = pd.read_excel("Coding Test.xlsx", sheet_name=2, skiprows=29, nrows=10, header=None)
 wheat_nov.columns = ["Country", "2024"]
-print(wheat_nov)
+#print(wheat_nov)
 
 # wheat area chart
 plt.figure(figsize=(10,7))
@@ -116,6 +116,7 @@ plt.tight_layout()
 
 fig6 = plt.gcf()
 
+
 # tkinter for generating chart in tabs
 import tkinter as tk
 from tkinter import ttk
@@ -128,25 +129,25 @@ root.state("zoomed")
 tabs = ttk.Notebook(root)
 tabs.pack(expand=1, fill='both')
 
+# function for each tab
 def add_tab(title, figs):
     frame = ttk.Frame(tabs)
     tabs.add(frame, text=title)
     
-    # add a scrollbar
     canvas_scroll = tk.Canvas(frame)
     scrollbar = ttk.Scrollbar(frame, orient="vertical", command=canvas_scroll.yview)
     scroll_frame = ttk.Frame(canvas_scroll)
     
-    scroll_frame.bind("<Configure>", lambda e: canvas_scroll.configure(scrollregion=canvas_scroll.bbox("all")))
+    scroll_frame.bind("<Configure>", lambda e: canvas_scroll.configure(scrollregion=canvas_scroll.bbox("all"))) 
+    canvas_scroll.bind("<MouseWheel>", lambda e: canvas_scroll.yview_scroll(-1*(e.delta//120), "units")) # add mousewheel 
     
     canvas_scroll.create_window((0, 0), window=scroll_frame, anchor="nw")
     canvas_scroll.configure(yscrollcommand=scrollbar.set)
-    
     canvas_scroll.pack(side="left", fill="both", expand=1)
-    scrollbar.pack(side="right", fill="y")
+    scrollbar.pack(side="right", fill="y") # add scrollbar
     
-    # add charts into scroll frame
-    for fig in figs:
+    # add each figure 
+    for fig in figs: 
         canvas = FigureCanvasTkAgg(fig, master=scroll_frame)
         canvas.draw()
         canvas.get_tk_widget().pack(fill="both", expand=1)

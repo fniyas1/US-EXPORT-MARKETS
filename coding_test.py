@@ -15,7 +15,7 @@ print(soybeans)
 plt.figure(figsize=(10,7))
 plot1 = soybeans.plot(kind='barh', x="Country", stacked=True, width=0.3)
 plt.xlabel("Metric Tons") 
-plt.ylim(0, 25000000)
+plt.xlim(0, 25000000)
 plot1.xaxis.set_major_formatter(mticker.FuncFormatter(lambda x, _: f"{x:,.0f}")) # formatting numbers
 plot1.legend(loc="lower center", bbox_to_anchor=(0.5, -0.25), ncol=2,handlelength=1, handleheight=1)
 plt.box(False)

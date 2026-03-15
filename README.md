@@ -1,5 +1,4 @@
-# US-EXPORT-MARKETS
-# Data Visualizations
+# US-EXPORT-MARKETS Data Visualizations
 
 Python data visualization of the top 10 U.S. agricultural export markets for soybeans, corn, and wheat using pandas, matplotlib, and tkinter.
 

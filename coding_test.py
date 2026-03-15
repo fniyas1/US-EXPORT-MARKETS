@@ -122,32 +122,35 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 root = tk.Tk()
 root.title("U.S. Export Markets")
-
+root.state("zoomed")
 
 tabs = ttk.Notebook(root)
 tabs.pack(expand=1, fill='both')
 
-def add_chart(fig, title):
-    frame = ttk.Frame(tabs, width=900, height=700)
-    frame.pack_propagate(False) 
+def add_tab(title, figs):
+    frame = ttk.Frame(tabs)
     tabs.add(frame, text=title)
-    canvas = FigureCanvasTkAgg(fig, master=frame)
-    canvas.draw()
-    canvas.get_tk_widget().pack(expand=1, fill="both")
+    
+    # add a scrollbar
+    canvas_scroll = tk.Canvas(frame)
+    scrollbar = ttk.Scrollbar(frame, orient="vertical", command=canvas_scroll.yview)
+    scroll_frame = ttk.Frame(canvas_scroll)
+    
+    scroll_frame.bind("<Configure>", lambda e: canvas_scroll.configure(scrollregion=canvas_scroll.bbox("all")))
+    
+    canvas_scroll.create_window((0, 0), window=scroll_frame, anchor="nw")
+    canvas_scroll.configure(yscrollcommand=scrollbar.set)
+    
+    canvas_scroll.pack(side="left", fill="both", expand=1)
+    scrollbar.pack(side="right", fill="y")
+    
+    # add charts into scroll frame
+    for fig in figs:
+        canvas = FigureCanvasTkAgg(fig, master=scroll_frame)
+        canvas.draw()
+        canvas.get_tk_widget().pack(fill="both", expand=1)
 
+add_tab("Oct", [fig1, fig2, fig3])
+add_tab("Nov", [fig4, fig5, fig6])
 
-add_chart(fig1, "Soybeans Oct")
-add_chart(fig2, "Corn Oct")
-add_chart(fig3, "Wheat Oct")
-add_chart(fig4, "Soybeans Nov")
-add_chart(fig5, "Corn Nov")
-add_chart(fig6, "Wheat Nov")
-
-root.update()
-for tab in tabs.tabs():
-    tabs.select(tab)
-    root.update()
-
-tabs.select(0)  # go back to first tab
-root.geometry("1000x800")
 root.mainloop()

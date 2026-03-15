@@ -19,6 +19,7 @@ pip install pandas matplotlib openpyxl
 python coding_test.py
 ```
 4. A window will open with tabs for Oct and Nov, each containing three charts for soybeans, corn, and wheat
+5. Scroll down within each tab to view all three charts.
 
 ## Assumptions & Decisions
 
@@ -28,3 +29,4 @@ python coding_test.py
 - Visualization titles were made more descriptive for context
 - X and Y axis labels were added to indicate unit of measurement (Metric Tons)
 - Percentages were added to the Soybeans pie chart (Nov) for easier readability of market share
+- Scrollbar was added to tkinter window 
